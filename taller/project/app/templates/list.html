@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+<section>
+    <h1>Lista de {{title}}</h1>
+
+    <p>Número registros: {{numero_registros}} </p>
+
+    <article>
+        <ul>
+            {% for item in items %}
+                <li>
+                    <a href="{{item.get_absolute_url}}">{{item}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
