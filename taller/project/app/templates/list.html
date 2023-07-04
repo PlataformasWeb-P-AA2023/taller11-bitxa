@@ -5,6 +5,7 @@ Lista de {{ title }}
 {% endblock %}
 
 {% block content %}
+
 <section>
     <div class="section-header">
         <h2>{{ title }}</h2>
@@ -14,71 +15,71 @@ Lista de {{ title }}
     <article>
         <div>
             {% if type == "edificios" %}
-            <a href="{% url 'crear_edificio' %}">
+            <a href="{% url 'crear_edificio' %}" style="color: black;">
                 <p>Crear nuevo</p>
             </a>
             {% elif type == "departamentos" %}
-            <a href="{% url 'crear_departamento' %}">
+            <a href="{% url 'crear_departamento' %}" style="color: black;">
                 <p>Crear nuevo</p>
             </a>
             {% endif %}
         </div>
-        <div class="section-cards">
-            {% for item in items %}
-            <div class="card">
-                <div class="card-buttons">
-                    <button><a href="{% url 'editar_edificio' item.id %}">Editar</a></button>
-                    <button><a href="{% url 'eliminar_edificio' item.id %}">Eliminar</a></button>
-                </div>
-                {% if type == "edificios" %}
-                <div class="field">
-                    <h5>Edificio: </h5>
-                    <p>{{ item.id }}</p>
-                </div>
-                <div class="field">
-                    <h5>Nombre: </h5>
-                    <p>{{ item.nombre }}</p>
-                </div>
-                <div class="field">
-                    <h5>Dirección: </h5>
-                    <p>{{ item.direccion }}</p>
-                </div>
-                <div class="field">
-                    <h5>Ciudad: </h5>
-                    <p>{{ item.ciudad }}</p>
-                </div>
-                <div class="field">
-                    <h5>Tipo: </h5>
-                    <p>{{ item.tipo }}</p>
-                </div>
-                {% elif type == "departamentos" %}
-                <div class="field">
-                    <h5>Departamento: </h5>
-                    <p>{{ item.id }}</p>
-                </div>
-                <div class="field">
-                    <h5>Nombre Propietario: </h5>
-                    <p>{{ item.nombre_propietario }}</p>
-                </div>
-                <div class="field">
-                    <h5>Costo: </h5>
-                    <p>{{ item.costo }}</p>
-                </div>
-                <div class="field">
-                    <h5>Número de Cuartos: </h5>
-                    <p>{{ item.numero_cuartos }}</p>
-                </div>
-                <div class="field">
-                    <h5>Edificio: </h5>
-                    <p>{{ item.edificio.nombre }}</p>
-                </div>
-                {% else %}
-                <a href="{{ item.get_absolute_url }}">{{ item }}</a>
-                {% endif %}
-            </div>
-            {% endfor %}
 
+        <div class="section-cards">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        {% if type == "edificios" %}
+                        <th>Nombre</th>
+                        <th>Dirección</th>
+                        <th>Ciudad</th>
+                        <th>Tipo</th>
+                        {% elif type == "departamentos" %}
+                        <th>Nombre Propietario</th>
+                        <th>Costo</th>
+                        <th>Número de Cuartos</th>
+                        <th>Edificio</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        {% if type == "edificios" %}
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.direccion }}</td>
+                        <td>{{ item.ciudad }}</td>
+                        <td>{{ item.tipo }}</td>
+                        {% elif type == "departamentos" %}
+                        <td>{{ item.nombre_propietario }}</td>
+                        <td>{{ item.costo }}</td>
+                        <td>{{ item.numero_cuartos }}</td>
+                        <td>{{ item.edificio.nombre }}</td>
+                        {% endif %}
+                        <td><div class="card-buttons">
+                            {% if type == "edificios" %}
+                            <button><a
+                                    href="{% url 'editar_edificio' item.id %}">Editar</a></button>
+                            <button><a
+                                    href="{% url 'eliminar_edificio' item.id %}">Eliminar</a></button>
+                            {% elif type == "departamentos" %}
+                            <button><a
+                                    href="{% url 'editar_departamento' item.id %}">Editar</a></button>
+                            <button><a
+                                    href="{% url 'eliminar_departamento' item.id %}">Eliminar</a></button>
+                            {% endif %}
+                        </div>
+                    </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
         </div>
+
     </article>
 </section>
 {% endblock %}
