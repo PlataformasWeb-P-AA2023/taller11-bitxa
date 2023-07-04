@@ -1,8 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        {% load static %}
         <meta charset="UTF-8">
         <title>{% block title %}Django App{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'styles/base.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/list.css' %}">
+        
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
@@ -10,6 +16,14 @@
             <h1>
                 App
             </h1>
+            <nav>
+                <button class="nav-item">
+                    <a href="{% url 'listar_edificios' %}">Edificios</a>
+                </button>
+                <button class="nav-item">
+                    <a href="{% url 'listar_departamentos' %}">Departamentos</a>
+                </button>
+            </nav>
         </header>
 
         <main>

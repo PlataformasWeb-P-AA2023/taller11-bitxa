@@ -1,17 +1,84 @@
 {% extends "base.html" %}
 
-<section>
-    <h1>Lista de {{title}}</h1>
+{% block title %}
+Lista de {{ title }}
+{% endblock %}
 
-    <p>Número registros: {{numero_registros}} </p>
+{% block content %}
+<section>
+    <div class="section-header">
+        <h2>{{ title }}</h2>
+        <p><b>Número registros:</b> {{ numero_registros }}</p>
+    </div>
 
     <article>
-        <ul>
+        <div>
+            {% if type == "edificios" %}
+            <a href="{% url 'crear_edificio' %}">
+                <p>Crear nuevo</p>
+            </a>
+            {% elif type == "departamentos" %}
+            <a href="{% url 'crear_departamento' %}">
+                <p>Crear nuevo</p>
+            </a>
+            {% endif %}
+        </div>
+        <div class="section-cards">
             {% for item in items %}
-                <li>
-                    <a href="{{item.get_absolute_url}}">{{item}}</a>
-                </li>
+            <div class="card">
+                <div class="card-buttons">
+                    <button><a href="{% url 'editar_edificio' item.id %}">Editar</a></button>
+                    <button><a href="{% url 'eliminar_edificio' item.id %}">Eliminar</a></button>
+                </div>
+                {% if type == "edificios" %}
+                <div class="field">
+                    <h5>Edificio: </h5>
+                    <p>{{ item.id }}</p>
+                </div>
+                <div class="field">
+                    <h5>Nombre: </h5>
+                    <p>{{ item.nombre }}</p>
+                </div>
+                <div class="field">
+                    <h5>Dirección: </h5>
+                    <p>{{ item.direccion }}</p>
+                </div>
+                <div class="field">
+                    <h5>Ciudad: </h5>
+                    <p>{{ item.ciudad }}</p>
+                </div>
+                <div class="field">
+                    <h5>Tipo: </h5>
+                    <p>{{ item.tipo }}</p>
+                </div>
+                {% elif type == "departamentos" %}
+                <div class="field">
+                    <h5>Departamento: </h5>
+                    <p>{{ item.id }}</p>
+                </div>
+                <div class="field">
+                    <h5>Nombre Propietario: </h5>
+                    <p>{{ item.nombre_propietario }}</p>
+                </div>
+                <div class="field">
+                    <h5>Costo: </h5>
+                    <p>{{ item.costo }}</p>
+                </div>
+                <div class="field">
+                    <h5>Número de Cuartos: </h5>
+                    <p>{{ item.numero_cuartos }}</p>
+                </div>
+                <div class="field">
+                    <h5>Edificio: </h5>
+                    <p>{{ item.edificio.nombre }}</p>
+                </div>
+                {% else %}
+                <a href="{{ item.get_absolute_url }}">{{ item }}</a>
+                {% endif %}
+            </div>
             {% endfor %}
-        </ul>
+
+        </div>
     </article>
 </section>
+{% endblock %}

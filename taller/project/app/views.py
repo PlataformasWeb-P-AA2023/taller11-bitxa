@@ -7,20 +7,19 @@ from .forms import EdificioForm, DepartamentoForm
 def listar_edificios(request):
     edificios = Edificio.objects.all()
 
-    informacion_template = {
-        'items': edificios, 'numero_registros': len(edificios)}
-    return render(request, 'edificios_list.html', informacion_template)
+    data = getDataForHtml(edificios, len(edificios), 'Listado de Edificios', 'edificios')
+    return render(request, 'list.html', data)
 
 
 def listar_departamentos(request):
     departamentos = Departamento.objects.all()
 
-    data = getDataForHtml(departamentos, len(departamentos))
-    return render(request, 'edificios_list.html', data)
+    data = getDataForHtml(departamentos, len(departamentos), 'Listado de Departamentos', 'departamentos')
+    return render(request, 'list.html', data)
 
 
-def getDataForHtml(items, numero_registros):
-    return {'items': items, 'numero_registros': numero_registros}
+def getDataForHtml(items, numero_registros, title, type):
+    return {'items': items, 'numero_registros': numero_registros, 'title': title, 'type': type}
 
 
 def crear_edificio(request):
@@ -31,7 +30,7 @@ def crear_edificio(request):
             return redirect('listar_edificios')
     else:
         form = EdificioForm()
-    return render(request, 'edificios_form.html', {'form': form})
+    return render(request, 'form.html', {'form': form})
 
 
 def crear_departamento(request):
@@ -42,32 +41,42 @@ def crear_departamento(request):
             return redirect('listar_departamentos')
     else:
         form = DepartamentoForm()
-    return render(request, 'edificios_form.html', {'form': form})
+    return render(request, 'form.html', {'form': form})
 
 
 def editar_departamento(request, id):
     departamento = Departamento.objects.get(pk=id)
     if request.method == 'POST':
         form = DepartamentoForm(request.POST, instance=departamento)
-        
+
         if form.is_valid():
             form.save()
             return redirect(listar_departamentos)
     else:
         form = DepartamentoForm(instance=departamento)
-    
-    return render(request, 'edificios_form.html', {'form': form})
+
+    return render(request, 'form.html', {'form': form})
 
 
 def editar_edificio(request, id):
     edificio = Edificio.objects.get(pk=id)
     if request.method == 'POST':
         form = EdificioForm(request.POST, instance=edificio)
-        
         if form.is_valid():
             form.save()
             return redirect(listar_edificios)
     else:
         form = EdificioForm(instance=edificio)
-    
-    return render(request, 'edificios_form.html', {'form': form})
+
+    return render(request, 'form.html', {'form': form})
+
+
+def eliminar_departamento(request, id):
+    departamento = Departamento.objects.get(pk=id)
+    departamento.delete()
+    return redirect(listar_departamentos)
+
+def eliminar_edificio(request, id):
+    edificio = Edificio.objects.get(pk=id)
+    edificio.delete()
+    return redirect(listar_edificios)
